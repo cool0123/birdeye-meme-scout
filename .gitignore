@@ -1,0 +1,15 @@
+# Private local notes
+PRIVATE_*
+*_PRIVATE.*
+*.secret
+PROJECT_CONTEXT.md
+BOUNTY_KNOWLEDGE.md
+SUBMISSION_DRAFT.md
+.env
+.env.*
+!.env.example
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
