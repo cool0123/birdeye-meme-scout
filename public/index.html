@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Birdeye Meme Scout</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Solana Launch Radar</p>
+          <h1>Birdeye Meme Scout</h1>
+          <p class="subtitle">A lightweight review dashboard for checking fresh Solana token launches with Birdeye market data.</p>
+        </div>
+        <div class="status-card">
+          <span id="key-status">Checking API key...</span>
+          <strong id="call-count">0 API calls</strong>
+        </div>
+      </section>
+
+      <section class="controls">
+        <form id="key-form" class="key-form">
+          <input id="api-key-input" type="password" placeholder="Paste Birdeye API key for this session" autocomplete="off" />
+          <button type="submit">Use Key In Memory</button>
+        </form>
+        <button id="refresh-trending" class="primary">Refresh Trending</button>
+        <button id="refresh-new">Refresh New Listings</button>
+        <button id="run-usage-check">Run API Usage Check</button>
+      </section>
+
+      <section class="grid">
+        <article class="panel">
+          <div class="panel-heading">
+            <h2>Optional Trending Tokens</h2>
+            <p>Available when the current API plan and rate limit allow token_trending access.</p>
+          </div>
+          <div id="trending-list" class="token-list"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-heading">
+            <h2>New Listing Radar</h2>
+            <p>Fresh listings with meme-platform filter enabled.</p>
+          </div>
+          <div id="new-list" class="token-list"></div>
+        </article>
+      </section>
+
+      <section class="panel detail-panel">
+        <div class="panel-heading">
+          <h2>Security Snapshot</h2>
+          <p>Select any token to check optional token_security data when available.</p>
+        </div>
+        <pre id="security-output">No token selected.</pre>
+      </section>
+    </main>
+
+    <template id="token-card-template">
+      <button class="token-card">
+        <div class="token-main">
+          <img class="token-logo" alt="" />
+          <div>
+            <strong class="token-symbol"></strong>
+            <span class="token-name"></span>
+          </div>
+        </div>
+        <div class="token-metrics">
+          <span class="metric liquidity"></span>
+          <span class="metric volume"></span>
+          <span class="metric score"></span>
+        </div>
+      </button>
+    </template>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

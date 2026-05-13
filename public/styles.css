@@ -1,0 +1,257 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #071018;
+  color: #eef7ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(42, 210, 255, 0.2), transparent 32rem),
+    radial-gradient(circle at bottom right, rgba(255, 216, 77, 0.12), transparent 28rem),
+    #071018;
+}
+
+button {
+  font: inherit;
+}
+
+.shell {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 24px;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: #ffd84d;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 14px;
+  font-size: clamp(2.4rem, 8vw, 5.8rem);
+  line-height: 0.9;
+  letter-spacing: -0.08em;
+}
+
+h2 {
+  margin-bottom: 6px;
+  font-size: 1.1rem;
+}
+
+.subtitle {
+  max-width: 720px;
+  color: #b7c9d8;
+  font-size: 1.08rem;
+  line-height: 1.7;
+}
+
+.status-card,
+.panel,
+.controls {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(9, 23, 34, 0.78);
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(18px);
+}
+
+.status-card {
+  min-width: 230px;
+  border-radius: 24px;
+  padding: 20px;
+}
+
+.status-card span {
+  display: block;
+  margin-bottom: 8px;
+  color: #9fb4c7;
+}
+
+.status-card strong {
+  font-size: 1.65rem;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 14px;
+  border-radius: 22px;
+}
+
+.controls button,
+.key-form input,
+.token-card {
+  border: 0;
+}
+
+.controls button,
+.token-card {
+  cursor: pointer;
+}
+
+.controls button {
+  border-radius: 999px;
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #eef7ff;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.controls button:hover,
+.token-card:hover {
+  transform: translateY(-2px);
+}
+
+.controls .primary {
+  background: linear-gradient(135deg, #ffd84d, #ff8b3d);
+  color: #1b1202;
+  font-weight: 800;
+}
+
+.key-form {
+  display: flex;
+  flex: 1 1 360px;
+  gap: 10px;
+}
+
+.key-form input {
+  min-width: 220px;
+  flex: 1;
+  border-radius: 999px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #eef7ff;
+  outline: none;
+}
+
+.key-form input::placeholder {
+  color: #8da1b2;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.panel {
+  border-radius: 28px;
+  padding: 20px;
+}
+
+.panel-heading {
+  margin-bottom: 16px;
+}
+
+.panel-heading p {
+  color: #92a8bb;
+}
+
+.token-list {
+  display: grid;
+  gap: 12px;
+}
+
+.token-card {
+  width: 100%;
+  border-radius: 20px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #eef7ff;
+  text-align: left;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.token-main,
+.token-metrics {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.token-main {
+  margin-bottom: 12px;
+}
+
+.token-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  object-fit: cover;
+}
+
+.token-symbol {
+  display: block;
+  font-size: 1rem;
+}
+
+.token-name {
+  display: block;
+  max-width: 320px;
+  overflow: hidden;
+  color: #a8b9c9;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.metric {
+  border-radius: 999px;
+  padding: 6px 9px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #bcd0df;
+  font-size: 0.8rem;
+}
+
+.score {
+  color: #071018;
+  background: #8ef7a8;
+  font-weight: 800;
+}
+
+.detail-panel {
+  margin-top: 20px;
+}
+
+pre {
+  overflow: auto;
+  min-height: 220px;
+  margin: 0;
+  border-radius: 18px;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #d7e8f6;
+  line-height: 1.6;
+}
+
+@media (max-width: 850px) {
+  .hero,
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
