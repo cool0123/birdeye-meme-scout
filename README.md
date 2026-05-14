@@ -11,6 +11,7 @@ Public reviewer demo: https://cool0123.github.io/birdeye-meme-scout/
 - Tracks server-side Birdeye API call count during local testing.
 - Includes optional extensions for trending and token-security data when the API plan allows access.
 - Falls back to a static reviewer demo on GitHub Pages so judges can inspect the product flow without a private API key.
+- Completed the Sprint 4 qualification run with a real Birdeye Data Services key loaded only into local server memory: `Success: 50`, `Errors: 0`, final server-session counter `51 API calls`.
 
 ## Run locally
 
@@ -41,6 +42,8 @@ http://localhost:5173
 The API key is only read by `server.mjs`. The browser never receives the key.
 
 The public GitHub Pages demo uses sample tokens only. Live Birdeye API calls run through the local Node server with `BIRDEYE_API_KEY`.
+
+For the Sprint 4 usage proof, the key was loaded into runtime memory only, then cleared after the 50-call check. It was not committed or exposed in the browser.
 
 ## Contact
 
