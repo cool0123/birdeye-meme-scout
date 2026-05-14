@@ -1,7 +1,35 @@
 const state = {
   trending: [],
-  newListings: []
+  newListings: [],
+  demoMode: false
 };
+
+const DEMO_TOKENS = [
+  {
+    symbol: 'MOON',
+    name: 'Moon Signal',
+    address: 'DemoMoon1111111111111111111111111111111111',
+    liquidity: 184000,
+    volume24hUSD: 912000,
+    rank: 2
+  },
+  {
+    symbol: 'BIRD',
+    name: 'Birdeye Scout Demo',
+    address: 'DemoBird222222222222222222222222222222222',
+    liquidity: 76000,
+    volume24hUSD: 421000,
+    rank: 5
+  },
+  {
+    symbol: 'FRESH',
+    name: 'Fresh Listing Candidate',
+    address: 'DemoFresh33333333333333333333333333333333',
+    liquidity: 31000,
+    volume24hUSD: 127000,
+    rank: 9
+  }
+];
 
 const els = {
   keyStatus: document.querySelector('#key-status'),
@@ -17,18 +45,34 @@ document.querySelector('#refresh-new').addEventListener('click', loadNewListings
 document.querySelector('#run-usage-check').addEventListener('click', runApiUsageCheck);
 document.querySelector('#key-form').addEventListener('submit', setRuntimeKey);
 
-await refreshStatus();
-setLoading(els.trendingList, 'Optional endpoint. Click Refresh Trending to check availability for the current API key.');
-await loadNewListings();
+await initialize();
+
+async function initialize() {
+  await refreshStatus();
+  setLoading(els.trendingList, state.demoMode ? 'Static reviewer demo. Click Refresh Trending to view sample breakout tokens.' : 'Optional endpoint. Click Refresh Trending to check availability for the current API key.');
+  await loadNewListings();
+}
 
 async function refreshStatus() {
-  const status = await request('/api/status');
-  els.keyStatus.textContent = status.hasApiKey ? 'Birdeye API connected' : 'Missing local API key';
-  els.callCount.textContent = `${status.apiCallCount} API calls`;
+  try {
+    const status = await request('/api/status');
+    state.demoMode = false;
+    els.keyStatus.textContent = status.hasApiKey ? 'Birdeye API connected' : 'Missing local API key';
+    els.callCount.textContent = `${status.apiCallCount} API calls`;
+  } catch {
+    state.demoMode = true;
+    els.keyStatus.textContent = 'Static reviewer demo';
+    els.callCount.textContent = 'Demo data';
+  }
 }
 
 async function setRuntimeKey(event) {
   event.preventDefault();
+  if (state.demoMode) {
+    els.securityOutput.textContent = 'The public GitHub Pages demo uses sample data. Run the Node server locally to test live Birdeye API calls with your own key.';
+    return;
+  }
+
   const input = document.querySelector('#api-key-input');
   const apiKey = input.value.trim();
   if (!apiKey) return;
@@ -45,6 +89,12 @@ async function setRuntimeKey(event) {
 }
 
 async function loadTrending() {
+  if (state.demoMode) {
+    state.trending = DEMO_TOKENS;
+    renderTokens(els.trendingList, state.trending);
+    return;
+  }
+
   try {
     setLoading(els.trendingList, 'Loading trending tokens...');
     const response = await request('/api/trending?limit=20&sort_by=rank&sort_type=asc');
@@ -57,6 +107,12 @@ async function loadTrending() {
 }
 
 async function loadNewListings() {
+  if (state.demoMode) {
+    state.newListings = DEMO_TOKENS;
+    renderTokens(els.newList, state.newListings);
+    return;
+  }
+
   try {
     setLoading(els.newList, 'Loading new listings...');
     const response = await request('/api/new-listings?limit=20&meme_platform_enabled=true');
@@ -69,6 +125,11 @@ async function loadNewListings() {
 }
 
 async function runApiUsageCheck() {
+  if (state.demoMode) {
+    els.securityOutput.textContent = 'Static reviewer demo is active. The 50-call qualification path is implemented in the Node server and can be run locally with BIRDEYE_API_KEY.';
+    return;
+  }
+
   let successCount = 0;
   let errorCount = 0;
 
@@ -122,6 +183,21 @@ async function loadSecurity(token) {
     return;
   }
 
+  if (state.demoMode) {
+    els.securityOutput.textContent = JSON.stringify({
+      token: token.symbol || token.name,
+      address: token.address,
+      security: {
+        mode: 'demo',
+        liquidity: formatUsd(token.liquidity),
+        volume24hUSD: formatUsd(token.volume24hUSD || token.v24hUSD),
+        scoutScore: scoreToken(token),
+        reviewerNote: 'Run locally with a Birdeye API key to fetch /defi/token_security for real tokens.'
+      }
+    }, null, 2);
+    return;
+  }
+
   try {
     els.securityOutput.textContent = `Loading security snapshot for ${token.symbol || token.address}...`;
     const response = await request(`/api/security?address=${encodeURIComponent(token.address)}`);
@@ -134,7 +210,8 @@ async function loadSecurity(token) {
 
 async function request(url, options = {}) {
   const response = await fetch(url, options);
-  const payload = await response.json();
+  const contentType = response.headers.get('content-type') || '';
+  const payload = contentType.includes('application/json') ? await response.json() : { error: `Non-JSON response from ${url}` };
   if (!response.ok || payload.ok === false) {
     throw new Error(payload.error || 'Request failed');
   }
