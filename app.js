@@ -3,6 +3,8 @@ const state = {
   newListings: [],
   demoMode: false
 };
+const IS_GITHUB_PAGES = location.hostname.endsWith('github.io');
+
 
 const DEMO_TOKENS = [
   {
@@ -54,6 +56,13 @@ async function initialize() {
 }
 
 async function refreshStatus() {
+  if (IS_GITHUB_PAGES) {
+    state.demoMode = true;
+    els.keyStatus.textContent = 'Static reviewer demo';
+    els.callCount.textContent = 'Demo data';
+    return;
+  }
+
   try {
     const status = await request('/api/status');
     state.demoMode = false;
